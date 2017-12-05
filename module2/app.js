@@ -6,6 +6,24 @@ angular.module('ShoppingListCheckOff', [])
 .controller('ToBuyController', ToBuyController)
 .service('ShoppingListCheckOffService', ShoppingListCheckOffService);
 
+    ToBuyController.$inject = ['ShoppingListCheckOffService'];
+    function ToBuyController(ShoppingListCheckOffService) {
+        var toBuyController = this;
+        toBuyController.getToBuyList = ShoppingListCheckOffService.toBuyItems;
+
+        toBuyController.getToBuy = function() {
+            return ShoppingListCheckOffService.getToBuyItems();
+        }
+
+        toBuyController.isEmpty = function() {
+            return ShoppingListCheckOffService.getToBuyItems().length == 0;
+        }
+
+        toBuyController.buyItem = function(index) {
+            return ShoppingListCheckOffService.buyItem(index);
+        }
+    }
+
     AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
     function AlreadyBoughtController(ShoppingListCheckOffService) {
         var alreadyBoughtController = this;
@@ -14,36 +32,20 @@ angular.module('ShoppingListCheckOff', [])
             return ShoppingListCheckOffService.getAlreadyBoughtItems();
         }
 
+        alreadyBoughtController.isEmpty = function() {
+            return ShoppingListCheckOffService.getAlreadyBoughtItems().length == 0;
+        }
 
     }
 
-    ToBuyController.$inject = ['ShoppingListCheckOffService'];
-    function ToBuyController(ShoppingListCheckOffService) {
-        var toBuyController = this;
 
-
-        toBuyController.getToBuy = function() {
-            return ShoppingListCheckOffService.getToBuyItems();
-        }
-
-        toBuyController.isEmpty = function() {
-            return ShoppingListCheckOffService.getToBuyItems().length > 0;
-        }
-
-        toBuyController.buyItem = function(index) {
-
-            return ShoppingListCheckOffService.buyItem(index);
-        }
-    }
-
-
-function ShoppingListCheckOffService() {
+    function ShoppingListCheckOffService() {
     var service = this;
 
     // Init
     var alreadyBoughtItems = [];
     var toBuyItems = [
-        {name:"Pumpkins", quantity:"1 "},
+        {name:"Pumpkins", quantity:"2 "},
         {name:"Alfalfa Seed", quantity:"1 kilogram"},
         {name:"Bread", quantity:"1 loaf"},
         {name:"Yeast", quantity:"20 grams"},
@@ -52,13 +54,12 @@ function ShoppingListCheckOffService() {
 
     service.buyItem = function (itemIndex) {
         var transfer = toBuyItems.splice(itemIndex, 1);
-        //toBuyItems.splice(itemIndex, 1);
         alreadyBoughtItems.push(transfer[0]);
         console.debug(alreadyBoughtItems[0]);
     };
 
-    service.toBuyEmpty = function () {
-        return toBuyItems.length == 0;
+    service.isNothingBought = function () {
+        return alreadyBoughtItems.length == 0;
     };
 
     service.getToBuyItems = function () {
