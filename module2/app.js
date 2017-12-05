@@ -8,8 +8,8 @@ angular.module('ShoppingListCheckOff', [])
 
     ToBuyController.$inject = ['ShoppingListCheckOffService'];
     function ToBuyController(ShoppingListCheckOffService) {
+
         var toBuyController = this;
-        toBuyController.getToBuyList = ShoppingListCheckOffService.toBuyItems;
 
         toBuyController.getToBuy = function() {
             return ShoppingListCheckOffService.getToBuyItems();
@@ -38,19 +38,17 @@ angular.module('ShoppingListCheckOff', [])
 
     }
 
-
     function ShoppingListCheckOffService() {
     var service = this;
 
-    // Init
     var alreadyBoughtItems = [];
     var toBuyItems = [
         {name:"Pumpkins", quantity:"2 "},
         {name:"Alfalfa Seed", quantity:"1 kilogram"},
         {name:"Bread", quantity:"1 loaf"},
         {name:"Yeast", quantity:"20 grams"},
-        {name:"NASTURTIUM SEEDS", quantity:"1 gram"}
-            ];
+        {name:"Nasturtium Seeds", quantity:"1 gram"}
+    ];
 
     service.buyItem = function (itemIndex) {
         var transfer = toBuyItems.splice(itemIndex, 1);
